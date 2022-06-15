@@ -1,0 +1,3 @@
+[submodule "go-chartographer"]
+	path = go-chartographer
+	url = git@github.com:Dimedrolity/go-chartographer.git
