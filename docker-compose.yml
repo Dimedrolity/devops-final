@@ -1,0 +1,12 @@
+version: "2.4"
+
+services:
+  go-chartographer:
+    build: ./go-chartographer
+    mem_limit: 2g # по условию задачи
+    environment:
+      - IMG_DIR=${CONTAINER_IMG_DIR}
+    volumes:
+      - ${HOST_IMG_DIR}:${CONTAINER_IMG_DIR}
+    ports:
+      - "8080:8080"
