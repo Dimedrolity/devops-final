@@ -1,0 +1,36 @@
+groups:
+- name: AllInstances
+  rules:
+  - alert: InstanceDown
+    # Condition for alerting
+    expr: up == 0
+    for: 15s
+    # Annotation - additional informational labels to store more information
+    annotations:
+      title: 'Instance {{ $labels.instance }} down'
+      description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 15 sec.'
+    # Labels - additional labels to be attached to the alert
+    labels:
+      severity: 'critical'
+
+- name: Go-chartographer
+  rules:
+  - alert: LowDiskSpace
+    # чтобы сразу получить оповещение при первой нагрузке
+    expr: container_fs_usage_bytes{name="devops-final_go-chartographer_1"} > 20*1024*1024 # 20 Mb
+    for: 15s
+    annotations:
+      title: 'Service {{ $labels.name }} of instance {{ $labels.instance }} has low disk space'
+      description: 'Service {{ $labels.name }} of instance {{ $labels.instance }} of job {{ $labels.job }} has low disk space (less than 5 Gb) for more than 15 sec.'
+    labels:
+      severity: 'warning'
+
+  - alert: LowAvailableMemory
+    # чтобы сразу получить оповещение при первой нагрузке
+    expr: container_memory_usage_bytes{name="devops-final_go-chartographer_1"} > 20*1024*1024 # 20 Mb
+    for: 15s
+    annotations:
+      title: 'Service {{ $labels.name }} of instance {{ $labels.name }} has low available memory'
+      description: 'Service {{ $labels.name }} of instance {{ $labels.instance }} of job {{ $labels.job }} has low available memory for more than 15 sec.'
+    labels:
+      severity: 'warning'
